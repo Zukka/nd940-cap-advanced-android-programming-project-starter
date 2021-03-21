@@ -1,26 +1,61 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.network.CivicsApiStatus
+import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.model.Representative
+import kotlinx.coroutines.launch
+
+private const val TAG = "RepresentativeViewModel"
+
 
 class RepresentativeViewModel: ViewModel() {
 
-    //TODO: Establish live data for representatives and address
 
-    //TODO: Create function to fetch representatives from API from a provided address
+    private val _status = MutableLiveData<CivicsApiStatus>()
+    val status: LiveData<CivicsApiStatus>
+        get() = _status
 
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
+    private val _representatives = MutableLiveData<List<Representative>>()
+    val representatives: LiveData<List<Representative>>
+        get() = _representatives
 
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
+    private val _address = MutableLiveData(Address("", "", "", "", ""))
+    val address: LiveData<Address>
+        get() = _address
 
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
+    private fun fetchRepresentatives(address: String) {
+        _status.value = CivicsApiStatus.LOADING
+        viewModelScope.launch {
+            try {
+                val response = CivicsApi.retrofitService.getRepresentatives(address)
+                val list = mutableListOf<Representative>()
+                response.offices.forEach { office ->
+                    list.addAll(office.getRepresentatives(response.officials))
+                    _representatives.value = list
+                }
+            } catch (e: Exception) {
+                _status.value = CivicsApiStatus.ERROR
+                Log.e(TAG, "${e.message}")
+            }
+            _status.value = CivicsApiStatus.DONE
+        }
+    }
 
-     */
+    fun searchWithLocation(address: Address) {
+        _address.value = address
+        fetchRepresentatives(address.toFormattedString())
+    }
 
-    //TODO: Create function get address from geo location
-
-    //TODO: Create function to get address from individual fields
+    fun searchWithAddress() {
+        _address.value?.let {
+            fetchRepresentatives(it.toFormattedString())
+        }
+    }
 
 }

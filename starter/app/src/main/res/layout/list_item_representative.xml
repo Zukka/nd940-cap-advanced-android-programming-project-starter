@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="representative"
+            type="com.example.android.politicalpreparedness.representative.model.Representative" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/default_padding"
+        android:paddingBottom="@dimen/default_padding">
+
+        <ImageView
+            android:id="@+id/representativePhoto"
+            android:layout_width="@dimen/icon_size_large"
+            android:layout_height="@dimen/icon_size_large"
+            android:contentDescription="@string/accessibility_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:profileImage="@{representative.official.photoUrl}"
+            tools:src="@drawable/ic_profile" />
+
+        <TextView
+            android:id="@+id/representativeTitle"
+            style="@style/Political_Text.Medium"
+            android:layout_marginStart="@dimen/default_padding"
+            android:text="@{representative.office.name}"
+            app:layout_constraintStart_toEndOf="@+id/representativePhoto"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="President of the United States" />
+
+        <TextView
+            android:id="@+id/representativeName"
+            style="@style/Political_Text.Small"
+            android:text="@{representative.official.name}"
+            app:layout_constraintStart_toStartOf="@+id/representativeTitle"
+            app:layout_constraintTop_toBottomOf="@+id/representativeTitle"
+            tools:text="Donald J. Trump" />
+
+        <TextView
+            android:id="@+id/representativeParty"
+            style="@style/Political_Text.Small"
+            android:text="@{representative.official.party}"
+            app:layout_constraintStart_toStartOf="@+id/representativeTitle"
+            app:layout_constraintTop_toBottomOf="@+id/representativeName"
+            tools:text="Republican Party" />
+
+        <ImageView
+            android:id="@+id/representativeUrl"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small"
+            android:layout_marginEnd="@dimen/default_padding"
+            android:contentDescription="@string/accessibility_www"
+            android:src="@drawable/ic_www"
+            app:layout_constraintBottom_toBottomOf="@+id/representativeTwitter"
+            app:layout_constraintEnd_toStartOf="@+id/representativeFacebook" />
+
+        <ImageView
+            android:id="@+id/representativeFacebook"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small"
+            android:layout_marginEnd="@dimen/default_padding"
+            android:contentDescription="@string/accessibility_fb"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintBottom_toBottomOf="@+id/representativeTwitter"
+            app:layout_constraintEnd_toStartOf="@+id/representativeTwitter" />
+
+        <ImageView
+            android:id="@+id/representativeTwitter"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small"
+            android:contentDescription="@string/accessibility_twitter"
+            android:src="@drawable/ic_twitter"
+            app:layout_constraintBottom_toBottomOf="@+id/representativeParty"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

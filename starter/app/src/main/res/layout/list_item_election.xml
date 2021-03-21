@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="election"
+            type="com.example.android.politicalpreparedness.network.models.Election" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/default_padding"
+        android:paddingBottom="@dimen/default_padding">
+
+        <TextView
+            android:id="@+id/electionName"
+            style="@style/Political_Text.Medium"
+            android:text="@{election.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="New York Presidential Primary Election" />
+
+        <TextView
+            android:id="@+id/electionDay"
+            style="@style/Political_Text.Small"
+            app:date="@{election.electionDay}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/electionName"
+            tools:text="Tue Apr 07 00:00:00 EDT 2020" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
